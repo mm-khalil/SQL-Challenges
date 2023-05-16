@@ -1,0 +1,121 @@
+SELECT Customers.FirstName, Customers.Email, count(*) as "num-orders"
+FROM Customers, Orders
+WHERE Customers.CustomerID=Orders.CustomerID
+GROUP BY Customers.CustomerID
+ORDER BY "num-orders"DESC
+LIMIT 5;
+
+INSERT INTO Customers (CustomerID, FirstName, LastName, Email, Phone)
+VALUES('111','Ardiana','Sula','ardianasula@unh.newhaven.edu','5555553333');
+INSERT INTO Reservations (ReservationID, Date, PartySize)
+VALUES('111','oct 29','5');
+
+SELECT * FROM Customers WHERE FirstName = 'Ardiana'
+
+
+UPDATE Customers
+SET FavoriteDish = 'Dall Chawal'
+WHERE FirstName = 'Amby';
+SELECT * FROM Customers WHERE FirstName = 'Amby'
+
+CREATE TABLE IF NOT EXISTS AnneversaryAttendes(CustomerID Numeric, PartySize Integer);
+INSERT INTO AnneversaryAttendes(CustomerID, PartySize)
+SELECT Customers.CustomerID, Reservations.PartySize
+FROM Customers, Reservations
+WHERE Customers.Email='cdurdy2p@hplussport.com';
+
+
+
+UPDATE Loans
+SET ReturnedDate='2020-07-05'
+WHERE Loans.BookID = (SELECT BookID FROM Books WHERE Barcode == "6435968624");
+
+SELECT CustomerID, count(*) as "num_reserv"
+FROM Customers c
+JOIN Reservations r ON c.CustomerID = r.CustomerID
+WHERE (c.FirstName LIKE 'j%') OR  (c.LastName LIKE '_a%')
+GROUP BY c.CustomerID
+ORDER BY "num_reserv" DESC
+LIMIT 10;
+
+INSERT INTO Loans ( BookID, PatronID, LoanDate, DueDate)
+VALUES ('11','104','2016-06-16','2016-06-30');
+UPDATE Loans
+SET LoanDate ="2016-07-16", DueDate="2016-07-30";
+SELECT * FROM Loans WHERE BookID = '11';
+
+UPDATE Customers 
+SET Address='1050 CAMPBELl AVE',City='West Haven',State='CT';
+SELECT * FROM Customers WHERE FirstName = 'Taylor' AND LastName = 'Jenkins';
+
+
+
+SELECT Customers.City, Reservations.PartySize
+FROM  Reservations
+INNER JOIN Customers ON Customers.CustomerID = Reservations.CustomerID
+WHERE Customers.State='CT'
+ORDER BY Customers.City;
+
+
+UPDATE Customers
+SET Birthday = '02-27-2023'
+WHERE CustomerID ='17';
+
+SELECT * FROM Customers WHERE CustomerID ='17';
+
+SELECT Customers.Phone, MAX(Reservations.Date) AS "latest-reserv-date"
+FROM Reservations
+JOIN Customers ON Reservations.CustomerID = Customers.CustomerID
+WHERE Customers.State = 'CT' AND Customers.FavoriteDish<9
+GROUP BY Customers.Phone
+
+
+SELECT Customers.CustomerID, Customers.FirstName, Customers.LastName, Reservations.ReservationID, Dishes.DishID,
+Dishes.Name, Dishes.Price
+FROM Dishes,Reservations, Customers
+WHERE Customers.CustomerID ='100'
+ORDER BY Dishes.Price;
+
+ 
+
+INSERT INTO Customers (CustomerID, FirstName, LastName, Email, Phone)
+VALUES('115','Ardiana','Sula','ardianasula@unh.newhaven.edu','5555553333');
+INSERT INTO Dishes(DishID, Name, Price)
+VALUES('380','Chowl','5');
+INSERT INTO Dishes(DishID, Name, Price)
+VALUES('381','Morgaaah','5');
+INSERT INTO Dishes(DishID, Name, Price)
+VALUES('382','Pookorya','5');
+
+Select * from Dishes;
+
+select * from Orders;
+INSERT INTO Orders VALUES('1001','151','2020-07-23 22:22:00');
+Insert into OrdersDishes values ('4022','1001','25');
+SELECT SUM(d.price) as total_bill, o.orderdate
+FROM Orders o
+JOIN OrdersDishes od ON od.orderid = o.orderid
+JOIN dishes d ON d.dishid = od.dishid;
+select * from orders;
+INSERT INTO Orders VALUES('1001','101','2020-07-23 22:22:00');
+Insert into OrdersDishes values ('4022','1001','25');
+SELECT SUM(d.price) as total_bill, o.orderdate
+FROM Orders o
+JOIN OrdersDishes od ON od.orderid = o.orderid
+WHERE o.CustomerID = '115' AND o.orderid = (SELECT orderid from Orders where customerid = '115');
+
+
+
+
+SELECT popularity, count(*) as "pop"
+FROM movies
+GROUP BY movies.popularity
+ORDER BY "pop"DESC
+LIMIT 3;
+
+SELECT Customers.FirstName, count(*) as "Largest-num-orders"
+FROM Customers, Orders
+WHERE Customers.CustomerID=Orders.CustomerID AND Customers.State = 'TX'
+GROUP BY Customers.CustomerID
+ORDER BY "num-orders"
+LIMIT 10;
